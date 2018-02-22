@@ -3,7 +3,8 @@
     <h1>Silicon Valley</h1>
     <input type="text" name="search" v-model="search" placeholder="Title">
 
-    <select v-model="selectedSeason">
+    <select v-model="selectedSeason" @change="getEpisodesBySeason">
+      <option>All</option>
       <option v-for="season in numberOfSeasons" v-bind:key="season">
         {{ season }}
       </option>
@@ -23,37 +24,44 @@ import '../../styles/episodes.css';
 export default {
   data() {
     return {
-      allEpisodes: null,
-      selectedSeason: 1,
+      episodes: null,
+      selectedSeason: 'All',
       numberOfSeasons: null,
       search: null,
     };
   },
   mounted() {
-    this.getEpisodes();
+    this.getAllEpisodes();
   },
   computed: {
     filteredEpisodes() {
       if (!this.search) {
-        return this.allEpisodes;
+        return this.episodes;
       }
       return this.filterEpisodeByName();
     },
   },
   methods: {
-    async getEpisodes() {
+    async getAllEpisodes() {
       const response = await EpisodesService.getAllSiliconValleyEpisodes();
-      this.allEpisodes = response.data.allEpisodes;
+      this.episodes = response.data.allEpisodes;
       this.getNumberOfSeasons();
     },
     getNumberOfSeasons() {
-      this.numberOfSeasons = this.allEpisodes[this.allEpisodes.length - 1].season;
+      this.numberOfSeasons = this.episodes[this.episodes.length - 1].season;
     },
     filterEpisodeByName() {
-      return this.allEpisodes.filter((episode) => {
+      return this.episodes.filter((episode) => {
         return episode.name.toLowerCase().includes(this.search.toLowerCase());
       });
     },
+    async getEpisodesBySeason() {
+      if (this.selectedSeason === 'All') {
+        return this.getAllEpisodes()
+      }
+      const response = await EpisodesService.getSiliconValleyEpisodesBySeason(this.selectedSeason);
+      this.episodes = response.data.filteredEpisodes;
+    }
   },
 };
 </script>
