@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <h1>Silicon Valley</h1>
     <input type="text" name="search" v-model="search" placeholder="Search episode name...">
 
@@ -55,7 +56,7 @@ export default {
     },
     async getEpisodesBySeason() {
       if (this.selectedSeason === 'All') {
-        return this.getAllEpisodes()
+        this.getAllEpisodes();
       }
       const response = await EpisodesService.getSiliconValleyEpisodesBySeason(this.selectedSeason);
       this.episodes = response.data.filteredEpisodes;
@@ -65,7 +66,9 @@ export default {
     },
     filterEpisodeByName() {
       return this.episodes.filter((episode) => {
-        return episode.name.toLowerCase().includes(this.search.toLowerCase());
+        const name = episode.name.toLowerCase();
+        const search = this.search.toLowerCase();
+        return name.includes(search);
       });
     },
   },
