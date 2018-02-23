@@ -14,7 +14,9 @@
   <div class="grid-container">
     <div v-for="episode in filteredEpisodes" v-bind:key="episode.id">
       <div class="grid-item">
-        <img :src="episode.image.medium">
+        <div v-if="episode.image">
+          <img :src="episode.image.medium">
+        </div>
         <div>Season: {{ episode.season }} Episode: {{ episode.number }}</div>
         <div>{{ episode.name }}</div>
       </div>
@@ -56,7 +58,7 @@ export default {
     },
     async getEpisodesBySeason() {
       if (this.selectedSeason === 'All') {
-        this.getAllEpisodes();
+        return this.getAllEpisodes();
       }
       const response = await EpisodesService.getSiliconValleyEpisodesBySeason(this.selectedSeason);
       this.episodes = response.data.filteredEpisodes;
