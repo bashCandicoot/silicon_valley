@@ -62,6 +62,7 @@ export default {
       }
       const response = await EpisodesService.getSiliconValleyEpisodesBySeason(this.selectedSeason);
       this.episodes = response.data.filteredEpisodes;
+      return this.episodes;
     },
     getNumberOfSeasons() {
       this.numberOfSeasons = this.episodes[this.episodes.length - 1].season;
