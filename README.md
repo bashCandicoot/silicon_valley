@@ -1,6 +1,6 @@
 # Silicon Valley
 
-Vue/Node app to fetch and display episodes from the tv show Silicon Valley.
+Vue/Node app to fetch and display episodes from the TV show Silicon Valley allowing the user to search by episode name and season.
 
 To run:
 
